@@ -102,7 +102,7 @@ DELIMITER #
 CREATE PROCEDURE proc_insert_data (IN check BOOLEAN)
 BEGIN
 INSERT INTO tblCustomer (Email, PhoneNum, FirstName, LastName, Address1, Address2, Address3, PostCode)
-	VALUES ('JoshuaSavage@gmail.com',   '01522 104430', 'Joshua', 'Savage',  '72 Coast Rd', 'Kirkton', 'Glenbuchat', 'AB36 2XQ'),
+    VALUES ('JoshuaSavage@gmail.com',   '01522 104430', 'Joshua', 'Savage',  '72 Coast Rd', 'Kirkton', 'Glenbuchat', 'AB36 2XQ'),
            ('GabrielGrant@gmail.com',   '01522 292370', 'Gabriel', 'Grant',  '3 St Andrews Ln', 'Cwmbach', '', 'SA34 9PL'),
            ('SiennaNash@gmail.com',     '01522 983134', 'Sienna', 'Nash',    '14 Manor Way', 'Great Kingshill', '', 'HP15 3EQ'),
            ('LiamReynolds@gmail.com',   '01522 184652', 'Liam', 'Reynolds',  '79 Annfield Rd', 'Bearsden', '', 'G61 6FT'),
