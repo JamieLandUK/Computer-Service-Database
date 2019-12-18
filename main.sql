@@ -1,5 +1,6 @@
+
 -- Clear previous Database
-DROP DATABASE LAN18668469;
+DROP DATABASE IF EXISTS LAN18668469;
 
 
 -- Creating the Database
@@ -12,8 +13,8 @@ USE LAN18668469;
 -- Creating the Tables
 
 CREATE TABLE tblCustomer (
-    CustomerID 	int(11)     NOT NULL AUTO_INCREMENT,
-    Email 	varchar(60) NOT NULL UNIQUE,
+	CustomerID 	int(11) 	NOT NULL AUTO_INCREMENT,
+    Email 		varchar(60) NOT NULL UNIQUE,
     PhoneNum    varchar(12) DEFAULT NULL UNIQUE,
     FirstName 	varchar(30) NOT NULL,
     LastName 	varchar(30) NOT NULL,
@@ -27,8 +28,8 @@ CREATE TABLE tblCustomer (
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 CREATE TABLE tblStaff (
-    StaffID 	int(11)     NOT NULL AUTO_INCREMENT,
-    Email 	varchar(60) NOT NULL UNIQUE,
+    StaffID 	int(11) 	NOT NULL AUTO_INCREMENT,
+    Email 		varchar(60) NOT NULL UNIQUE,
     PhoneNum    varchar(12) DEFAULT NULL UNIQUE,
     Title       varchar(5)  NOT NULL,
     FirstName 	varchar(30) NOT NULL,
@@ -43,16 +44,16 @@ CREATE TABLE tblStaff (
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 CREATE TABLE tblService (
-    ServiceID 	int(11) 	NOT NULL AUTO_INCREMENT,
-    Name 	varchar(100)   	NOT NULL UNIQUE,
-    Price	decimal(15, 2) 	NOT NULL,
+    ServiceID 	int(11) 	  	NOT NULL AUTO_INCREMENT,
+	Name 		varchar(100)   	NOT NULL UNIQUE,
+    Price		decimal(15, 2) 	NOT NULL,
     PRIMARY KEY (ServiceID),
     KEY (ServiceID)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 CREATE TABLE tblOrder (
-    OrderID 	    int(11) 	NOT NULL AUTO_INCREMENT,
-    StartDate 	    DATETIME 	NOT NULL,
+	OrderID 		int(11) 	NOT NULL AUTO_INCREMENT,
+    StartDate 		DATETIME 	NOT NULL,
     FinishDate      DATETIME    DEFAULT NULL,
     TimeLength      TIME        DEFAULT NULL,
     Finished        BOOLEAN     DEFAULT FALSE,
@@ -98,11 +99,11 @@ CREATE TABLE tblStaffOnOrder (
 
 -- Data Insertion
 -- The data insertion has been put inside of a procedure to meet one of the security risks behinds being able to access the data through injection.
-DELIMITER #
-CREATE PROCEDURE proc_insert_data (IN check BOOLEAN)
+DELIMITER  //
+CREATE PROCEDURE proc_insert_data ()
 BEGIN
 INSERT INTO tblCustomer (Email, PhoneNum, FirstName, LastName, Address1, Address2, Address3, PostCode)
-    VALUES ('JoshuaSavage@gmail.com',   '01522 104430', 'Joshua', 'Savage',  '72 Coast Rd', 'Kirkton', 'Glenbuchat', 'AB36 2XQ'),
+	VALUES ('JoshuaSavage@gmail.com',   '01522 104430', 'Joshua', 'Savage',  '72 Coast Rd', 'Kirkton', 'Glenbuchat', 'AB36 2XQ'),
            ('GabrielGrant@gmail.com',   '01522 292370', 'Gabriel', 'Grant',  '3 St Andrews Ln', 'Cwmbach', '', 'SA34 9PL'),
            ('SiennaNash@gmail.com',     '01522 983134', 'Sienna', 'Nash',    '14 Manor Way', 'Great Kingshill', '', 'HP15 3EQ'),
            ('LiamReynolds@gmail.com',   '01522 184652', 'Liam', 'Reynolds',  '79 Annfield Rd', 'Bearsden', '', 'G61 6FT'),
@@ -119,7 +120,7 @@ INSERT INTO tblCustomer (Email, PhoneNum, FirstName, LastName, Address1, Address
            ('PeterGibbs@gmail.com',     '07981 403872', 'Peter', 'Gibbs',    '35 Caerfai Bay Rd', 'Ternhill', 'Cardiff', 'TF9 1SJ'),
            ('CaitlinAkhtar@gmail.com',  '07406 930372', 'Caitlin', 'Akhtar', '25 Cloch St', 'St Hilary', 'Jerishire', 'CF71 8WD'),
            ('CaitlinHawkins@gmail.com', '01522 764182', 'Caitlin', 'Hawkin', '15 Old Chapel Rd', 'Gawthrop', '', 'LA10 4AB'),
-           ('MadisonBell@gmail.com',    '01522 000127', 'Madison', 'Bell',   '30 Bridge Street', 'Goirtean A''chladaich', 'Aberystwyth', 'PH33 2XA'),
+           ('MadisonBell@gmail.com',    '01522 000127', 'Madison', 'Bell',   '30 Bridge St', 'Goirtean A''chladaich', 'Aberystwyth', 'PH33 2XA'),
            ('WilliamWade@gmail.com',    '01522 118314', 'William', 'Wade',   '40 Hertingfordbury Rd', 'Newport', 'Portsmouth', 'TF10 7FR'),
            ('MorganHeady@gmail.com',    '07561 378632', 'Morgan', 'Heady',   '8 Whitby Rd', 'Derrythorpe', '', 'DN17 1PB'),
            ('BenAkhtar@gmail.com',      '01522 722074', 'Ben', 'Akhtar',     '31 Scotsburn Rd', 'Tadlow', '', 'SG8 5RZ');
@@ -254,7 +255,7 @@ INSERT INTO tblStaffOnOrder (OrderID, StaffID)
            (22, 17), (22, 15), (22, 1),
            (23, 8),
            (24, 13);
-END#
+END //
 DELIMITER ;
 
 -- Finish one order when it compiles.
@@ -270,18 +271,18 @@ DELETE FROM tblService
 -- Should cascade any orders by this customer.
 
 -- Query 1: Receive the details of customers who have placed orders.
-DELIMITER #
+DELIMITER //
 CREATE PROCEDURE proc_customer_orders ()
 BEGIN
 CREATE VIEW vwCustomerOrders AS
 SELECT DISTINCT FirstName, LastName, Address1, Address2, Address3, PostCode, Email, PhoneNum FROM tblCustomer
-LEFT JOIN tblOrder ON tblCustomer.CustomerID=tblOrder.CustomerID
+INNER JOIN tblOrder ON tblCustomer.CustomerID=tblOrder.CustomerID
 ORDER BY tblCustomer.LastName ASC;
-END#
+END //
 DELIMITER ;
 
 -- Query 2: Details of all staff members who have been allocated orders.
-DELIMITER #
+DELIMITER //
 CREATE PROCEDURE proc_staff_orders ()
 BEGIN
 CREATE VIEW vwStaffOrders AS
@@ -291,11 +292,11 @@ SELECT s.Title AS `Staff Title`, s.FirstName AS `Staff First Name`, s.LastName A
     LEFT JOIN tblOrder o ON soo.OrderID=o.OrderID
     LEFT JOIN tblCustomer c ON o.CustomerID=c.CustomerID
     ORDER BY o.StartDate ASC;
-END#
+END //
 DELIMITER ;
 
 -- Query 3: The manager wishes to know all the customers and their order details.
-DELIMITER #
+DELIMITER //
 CREATE PROCEDURE proc_customer_order_details ()
 BEGIN
 CREATE VIEW vwCustomerOrderDetails AS
@@ -305,44 +306,43 @@ SELECT c.FirstName AS `Customer First Name`, c.LastName AS `Customer Last Name`,
     LEFT JOIN tblOrderService os ON o.OrderID=os.OrderID
     LEFT JOIN tblService se ON os.ServiceID=se.ServiceID
     ORDER BY o.StartDate ASC;
-END#
+END //
 DELIMITER ;
-
 
 -- STORED PROCEDURE
-DELIMITER #
-CREATE PROCEDURE proc_invoice(IN custEmail varchar(60), IN orderDateTime DATETIME)
+DELIMITER //
+CREATE PROCEDURE proc_new_customer(
+    Email varchar(60),
+    PhoneNum varchar(12),
+    FirstName varchar(30),
+    LastName varchar(30),
+    Address1 varchar(50),
+    Address2 varchar(50),
+    Address3 varchar(50),
+    PostCode varchar(10)
+)
 BEGIN
-SELECT c.FirstName AS `Customer First Name`, c.LastName AS `Customer Last Name`, c.Email AS `Customer Email`, o.StartDate AS `Order Date`, se.Name AS `Service Name`, se.Price AS `Service Price`, os.Quantity AS `Service Quantity`, o.Discount AS `Order Discount`
-    FROM tblCustomer c
-    LEFT JOIN tblOrder o ON c.CustomerID=o.CustomerID
-    LEFT JOIN tblOrderService os ON o.OrderID=os.OrderID
-    LEFT JOIN tblService se ON os.ServiceID=se.ServiceID
-    WHERE c.Email=@custEmail AND o.StartDate=@orderDateTime;
-
-    DECLARE Price INT;
-    SET Price = se.Price * os.Quantity;
-
-    DECLARE Discounted INT;
-    SET Discounted = Price*(1-(o.Discount/100));
-
-    DECLARE Subtotal INT;
-    IF o.Offsite == TRUE THEN
-        SET Subtotal = Discounted*(1.2);
-    ELSE
-        SET Subtotal = Discounted;
-    END IF;
-
-    SELECT "Single Price: ", Price, " Discounted Price?: ", Discounted, " Subtotal: ", Subtotal;
-END#
+    INSERT INTO tblCustomer (Email, PhoneNum, FirstName, LastName, Address1, Address2, Address3, PostCode)
+        VALUES (Email, PhoneNum, FirstName, LastName, Address1, Address2, Address3, PostCode);
+END //
 DELIMITER ;
 
+
 -- Calling the stored procedures which protect the insertions and queries.
-CALL proc_insert_data(TRUE);
+CALL proc_insert_data();
 CALL proc_customer_orders();
 CALL proc_staff_orders();
 CALL proc_customer_order_details();
-CALL proc_invoice('JoshuaSavage@gmail.com', '2019-07-11 09:30:00');
+CALL proc_new_customer(
+    'GaryReed@gmail.com',
+    '07733 516164',
+    'Gary',
+    'Reed',
+    '14 Blackwoode Avenue',
+    'Euclid',
+    'Lincoln',
+    'LN53 9PP'
+);
 
 
 -- Copy all Tables
