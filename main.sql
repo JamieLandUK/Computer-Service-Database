@@ -12,8 +12,8 @@ USE LAN18668469;
 -- Creating the Tables
 
 CREATE TABLE tblCustomer (
-	CustomerID 	int(11) 	NOT NULL AUTO_INCREMENT,
-    Email 		varchar(60) NOT NULL UNIQUE,
+    CustomerID 	int(11)     NOT NULL AUTO_INCREMENT,
+    Email 	varchar(60) NOT NULL UNIQUE,
     PhoneNum    varchar(12) DEFAULT NULL UNIQUE,
     FirstName 	varchar(30) NOT NULL,
     LastName 	varchar(30) NOT NULL,
@@ -27,8 +27,8 @@ CREATE TABLE tblCustomer (
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 CREATE TABLE tblStaff (
-    StaffID 	int(11) 	NOT NULL AUTO_INCREMENT,
-    Email 		varchar(60) NOT NULL UNIQUE,
+    StaffID 	int(11)     NOT NULL AUTO_INCREMENT,
+    Email 	varchar(60) NOT NULL UNIQUE,
     PhoneNum    varchar(12) DEFAULT NULL UNIQUE,
     Title       varchar(5)  NOT NULL,
     FirstName 	varchar(30) NOT NULL,
@@ -43,16 +43,16 @@ CREATE TABLE tblStaff (
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 CREATE TABLE tblService (
-    ServiceID 	int(11) 	  	NOT NULL AUTO_INCREMENT,
-	Name 		varchar(100)   	NOT NULL UNIQUE,
-    Price		decimal(15, 2) 	NOT NULL,
+    ServiceID 	int(11) 	NOT NULL AUTO_INCREMENT,
+    Name 	varchar(100)   	NOT NULL UNIQUE,
+    Price	decimal(15, 2) 	NOT NULL,
     PRIMARY KEY (ServiceID),
     KEY (ServiceID)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 CREATE TABLE tblOrder (
-	OrderID 		int(11) 	NOT NULL AUTO_INCREMENT,
-    StartDate 		DATETIME 	NOT NULL,
+    OrderID 	    int(11) 	NOT NULL AUTO_INCREMENT,
+    StartDate 	    DATETIME 	NOT NULL,
     FinishDate      DATETIME    DEFAULT NULL,
     TimeLength      TIME        DEFAULT NULL,
     Finished        BOOLEAN     DEFAULT FALSE,
